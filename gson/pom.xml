@@ -19,6 +19,27 @@
   </dependencies>
  
   <build>
+        <defaultGoal>compile</defaultGoal>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+
+                </includes>
+            </resource>
+
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </testResource>
+        </testResources>      
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -27,7 +48,7 @@
           <includePackageNames>com.google.gson</includePackageNames>
           <excludePackageNames>com.google.gson.internal:com.google.gson.internal.bind</excludePackageNames>
           <links>
-            <link>https://docs.oracle.com/javase/6/docs/api/</link>
+            <link>https://docs.oracle.com/javase/8/docs/api/</link>
           </links>
         </configuration>
       </plugin>
