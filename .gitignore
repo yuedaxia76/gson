@@ -4,7 +4,6 @@
 eclipsebin
 target
 */target
-pom.xml.*
 release.properties
 
 .idea
