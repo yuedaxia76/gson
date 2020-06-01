@@ -83,7 +83,7 @@ public enum ToNumberPolicy implements ToNumberStrategy {
             }
 
         }
-        Pattern longPattern = Pattern.compile("^[-,+]{0,1}[0-9]{1,19}$");
+        final Pattern longPattern = Pattern.compile("^[-,+]{0,1}[0-9]{1,19}$");
 
         Number toDouble(final String value, JsonReader in) throws MalformedJsonException {
             try {
