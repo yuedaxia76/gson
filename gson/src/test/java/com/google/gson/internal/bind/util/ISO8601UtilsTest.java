@@ -30,10 +30,9 @@ public class ISO8601UtilsTest {
 
     @Test
     public void testDateFormatString() {
-        GregorianCalendar calendar = new GregorianCalendar(utcTimeZone(), Locale.US);
-        // Calendar was created with current time, must clear it
-        calendar.clear();
-        calendar.set(2018, Calendar.JUNE, 25);
+        GregorianCalendar calendar = new GregorianCalendar(2018, Calendar.JUNE, 25);
+   
+        calendar.setTimeZone(utcTimeZone());
         Date date = calendar.getTime();
         String dateStr = ISO8601Utils.format(date);
         String expectedDate = "2018-06-25";

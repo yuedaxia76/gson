@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.gson;
 
 import junit.framework.TestCase;
@@ -25,78 +24,98 @@ import com.google.gson.common.MoreAsserts;
  */
 public final class JsonArrayTest extends TestCase {
 
-  public void testEqualsOnEmptyArray() {
-    MoreAsserts.assertEqualsAndHashCode(new JsonArray(), new JsonArray());
-  }
+    public void testEqualsOnEmptyArray() {
+        MoreAsserts.assertEqualsAndHashCode(new JsonArray(), new JsonArray());
+    }
 
-  public void testEqualsNonEmptyArray() {
-    JsonArray a = new JsonArray();
-    JsonArray b = new JsonArray();
+    public void testEqualsNonEmptyArray() {
+        JsonArray a = new JsonArray();
+        JsonArray b = new JsonArray();
 
-    assertEquals(a, a);
+        assertEquals(a, a);
 
-    a.add(new JsonObject());
-    assertFalse(a.equals(b));
-    assertFalse(b.equals(a));
+        a.add(new JsonObject());
+        assertFalse(a.equals(b));
+        assertFalse(b.equals(a));
 
-    b.add(new JsonObject());
-    MoreAsserts.assertEqualsAndHashCode(a, b);
+        b.add(new JsonObject());
+        MoreAsserts.assertEqualsAndHashCode(a, b);
 
-    a.add(new JsonObject());
-    assertFalse(a.equals(b));
-    assertFalse(b.equals(a));
+        a.add(new JsonObject());
+        assertFalse(a.equals(b));
+        assertFalse(b.equals(a));
 
-    b.add(JsonNull.INSTANCE);
-    assertFalse(a.equals(b));
-    assertFalse(b.equals(a));
-  }
+        b.add(JsonNull.INSTANCE);
+        assertFalse(a.equals(b));
+        assertFalse(b.equals(a));
+    }
 
-  public void testRemove() {
-    JsonArray array = new JsonArray();
-    try {
-      array.remove(0);
-      fail();
-    } catch (IndexOutOfBoundsException expected) {}
-    JsonPrimitive a = new JsonPrimitive("a");
-    array.add(a);
-    assertTrue(array.remove(a));
-    assertFalse(array.contains(a));
-    array.add(a);
-    array.add(new JsonPrimitive("b"));
-    assertEquals("b", array.remove(1).getAsString());
-    assertEquals(1, array.size());
-    assertTrue(array.contains(a));
-  }
+    public void testRemove() {
+        JsonArray array = new JsonArray();
+        try {
+            array.remove(0);
+            fail();
+        } catch (IndexOutOfBoundsException expected) {
+        }
+        JsonPrimitive a = new JsonPrimitive("a");
+        array.add(a);
+        assertTrue(array.remove(a));
+        assertFalse(array.contains(a));
+        array.add(a);
+        array.add(new JsonPrimitive("b"));
+        assertEquals("b", array.remove(1).getAsString());
+        assertEquals(1, array.size());
+        assertTrue(array.contains(a));
+    }
 
-  public void testSet() {
-    JsonArray array = new JsonArray();
-    try {
-      array.set(0, new JsonPrimitive(1));
-      fail();
-    } catch (IndexOutOfBoundsException expected) {}
-    JsonPrimitive a = new JsonPrimitive("a");
-    array.add(a);
-    array.set(0, new JsonPrimitive("b"));
-    assertEquals("b", array.get(0).getAsString());
-    array.set(0, null);
-    assertNull(array.get(0));
-    array.set(0, new JsonPrimitive("c"));
-    assertEquals("c", array.get(0).getAsString());
-    assertEquals(1, array.size());
-  }
+    public void testClear() {
+        JsonArray array = new JsonArray();
+        assertTrue(array.isEmpty());
 
-  public void testDeepCopy() {
-    JsonArray original = new JsonArray();
-    JsonArray firstEntry = new JsonArray();
-    original.add(firstEntry);
+        JsonPrimitive a = new JsonPrimitive("a");
+        array.add(a);
+        assertFalse(array.isEmpty());
+        array.clear();
+        assertTrue(array.isEmpty());
 
-    JsonArray copy = original.deepCopy();
-    original.add(new JsonPrimitive("y"));
+        JsonPrimitive b = new JsonPrimitive("b");
+        array.add(a);
+        array.add(b);
+        assertFalse(array.isEmpty());
+        array.clear();
+        assertTrue(array.isEmpty());
+    }
 
-    assertEquals(1, copy.size());
-    firstEntry.add(new JsonPrimitive("z"));
+    public void testSet() {
+        JsonArray array = new JsonArray();
+        try {
+            array.set(0, new JsonPrimitive(1));
+            fail();
+        } catch (IndexOutOfBoundsException expected) {
+        }
+        JsonPrimitive a = new JsonPrimitive("a");
+        array.add(a);
+        array.set(0, new JsonPrimitive("b"));
+        assertEquals("b", array.get(0).getAsString());
+        array.set(0, null);
+        assertNull(array.get(0));
+        array.set(0, new JsonPrimitive("c"));
+        assertEquals("c", array.get(0).getAsString());
+        assertEquals(1, array.size());
+    }
 
-    assertEquals(1, original.get(0).getAsJsonArray().size());
-    assertEquals(0, copy.get(0).getAsJsonArray().size());
-  }
+    public void testDeepCopy() {
+        JsonArray original = new JsonArray();
+        JsonArray firstEntry = new JsonArray();
+        original.add(firstEntry);
+
+        JsonArray copy = original.deepCopy();
+        original.add(new JsonPrimitive("y"));
+
+        assertEquals(1, copy.size());
+        firstEntry.add(new JsonPrimitive("z"));
+
+        assertEquals(1, original.get(0).getAsJsonArray().size());
+        assertEquals(0, copy.get(0).getAsJsonArray().size());
+    }
 }
