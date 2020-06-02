@@ -132,8 +132,7 @@ public final class GraphAdapterBuilderTest extends TestCase {
 
   public void testSerializationWithMultipleTypes() {
     Company google = new Company("Google");
-    new Employee("Jesse", google);
-    new Employee("Joel", google);
+
 
     GsonBuilder gsonBuilder = new GsonBuilder();
     new GraphAdapterBuilder()
