@@ -26,9 +26,7 @@
             <resource>
                 <directory>src/main/java</directory>
                 <includes>
-                    <include>**/*.xml</include>
-
-                </includes>
+                  </includes>
             </resource>
 
         </resources>
@@ -36,7 +34,6 @@
             <testResource>
                 <directory>src/test/java</directory>
                 <includes>
-                    <include>**/*.xml</include>
                 </includes>
             </testResource>
         </testResources>      
@@ -47,9 +44,6 @@
         <configuration>
           <includePackageNames>com.google.gson</includePackageNames>
           <excludePackageNames>com.google.gson.internal:com.google.gson.internal.bind</excludePackageNames>
-          <links>
-            <link>https://docs.oracle.com/javase/8/docs/api/</link>
-          </links>
         </configuration>
       </plugin>
       <plugin>
