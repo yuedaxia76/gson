@@ -129,6 +129,7 @@ public final class GraphAdapterBuilder {
               Element<?> current;
               while ((current = graph.queue.poll()) != null) {
                 out.name(current.id);
+                //System.err.println("############################"+current.id);
                 current.write(out);
               }
               out.endObject();
