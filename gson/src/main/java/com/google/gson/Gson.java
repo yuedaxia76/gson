@@ -444,7 +444,7 @@ public final class Gson {
 
             @Override
             public AtomicLongArray read(JsonReader in) throws IOException {
-                List<Long> list = new ArrayList<Long>();
+                List<Long> list = new ArrayList<>();
                 in.beginArray();
                 while (in.hasNext()) {
                     long value = longAdapter.read(in).longValue();
