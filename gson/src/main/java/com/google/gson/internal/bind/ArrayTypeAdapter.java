@@ -66,7 +66,7 @@ public final class ArrayTypeAdapter<E> extends TypeAdapter<Object> {
       return null;
     }
 
-    List<E> list = new ArrayList<E>();
+    List<E> list = new ArrayList<>(4);
     in.beginArray();
     while (in.hasNext()) {
       E instance = componentTypeAdapter.read(in);
