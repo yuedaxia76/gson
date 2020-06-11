@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 import com.google.gson.internal.LazilyParsedNumber;
+import com.google.gson.internal.Primitives;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.MalformedJsonException;
 import java.util.regex.Pattern;
@@ -72,7 +73,7 @@ public enum ToNumberPolicy implements ToNumberStrategy {
         public Number toNumber(JsonReader in) throws IOException, JsonParseException {
             final String value = in.nextString();
 
-            if (longPattern.matcher(value).find()) {
+            if (Primitives.isLong(value)) {
                 try {
                     return Long.parseLong(value);
                 } catch (NumberFormatException longEx) {
@@ -83,7 +84,6 @@ public enum ToNumberPolicy implements ToNumberStrategy {
             }
 
         }
-        final Pattern longPattern = Pattern.compile("^[-,+]{0,1}[0-9]{1,19}$");
 
         Number toDouble(final String value, JsonReader in) throws MalformedJsonException {
             try {

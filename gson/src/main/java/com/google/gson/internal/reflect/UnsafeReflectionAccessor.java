@@ -60,6 +60,7 @@ final class UnsafeReflectionAccessor extends ReflectionAccessor {
         putBooleanMethod.invoke(theUnsafe, ao, overrideOffset, true); // theUnsafe.putBoolean(ao, overrideOffset, true);
         return true;
       } catch (Exception ignored) { // do nothing
+          //ignored.printStackTrace();
       }
     }
     return false;

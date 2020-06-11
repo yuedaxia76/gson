@@ -15,6 +15,7 @@
  */
 package com.google.gson.internal.reflect;
 
+import com.google.gson.internal.JavaVersion;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -29,23 +30,32 @@ import org.junit.Test;
  */
 public class UnsafeReflectionAccessorTest {
 
-  @Test
-  public void testMakeAccessibleWithUnsafe() throws Exception {
-    UnsafeReflectionAccessor accessor = new UnsafeReflectionAccessor();
-    Field field = ClassWithPrivateFinalFields.class.getDeclaredField("a");
-    try {
-      boolean success = accessor.makeAccessibleWithUnsafe(field);
-      assertTrue(success);
-    } catch (Exception e) {
-      fail("Unsafe didn't work on the JDK");
+    @Test
+    public void testMakeAccessibleWithUnsafe() throws Exception {
+        UnsafeReflectionAccessor accessor = new UnsafeReflectionAccessor();
+        Field field = ClassWithPrivateFinalFields.class.getDeclaredField("a");
+        try {
+            boolean success = accessor.makeAccessibleWithUnsafe(field);
+            if(JavaVersion.getMajorJavaVersion()<11)
+            assertTrue(success);
+        } catch (Exception e) {
+            fail("Unsafe didn't work on the JDK");
+        }
     }
-  }
 
-  @SuppressWarnings("unused")
-  private static final class ClassWithPrivateFinalFields {
-    private final String a;
-    public ClassWithPrivateFinalFields(String a) {
-      this.a = a;
+    @SuppressWarnings("unused")
+    private static final class ClassWithPrivateFinalFields {
+
+        private final String a;
+
+        public ClassWithPrivateFinalFields(String a) {
+            this.a = a;
+        }
+
+        @Override
+        public String toString() {
+            return a;
+
+        }
     }
-  }
 }
