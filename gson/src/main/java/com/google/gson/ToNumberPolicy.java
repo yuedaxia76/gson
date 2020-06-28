@@ -22,7 +22,7 @@ import com.google.gson.internal.LazilyParsedNumber;
 import com.google.gson.internal.Primitives;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.MalformedJsonException;
-import java.util.regex.Pattern;
+
 
 /**
  * An enumeration that defines two standard number reading strategies and a
