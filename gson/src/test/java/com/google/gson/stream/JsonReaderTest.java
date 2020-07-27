@@ -1442,6 +1442,21 @@ public final class JsonReaderTest extends TestCase {
     }
   }
 
+  /**
+   * At most one non-execute prefix must be consumed.
+   */
+  public void testLenientDoubleNonExecutePrefix() throws IOException {
+    JsonReader reader = new JsonReader(reader(")]}'\n)]}'\n 1"));
+    reader.setLenient(true);
+    // Consumes the parenthesis after the first non-execute prefix
+    assertEquals(")", reader.nextString());
+    try {
+      reader.peek();
+      fail();
+    } catch (MalformedJsonException expected) {
+    }
+  }
+
   public void testBomIgnoredAsFirstCharacterOfDocument() throws IOException {
     JsonReader reader = new JsonReader(reader("\ufeff[]"));
     reader.beginArray();
@@ -1693,7 +1708,29 @@ public final class JsonReaderTest extends TestCase {
     } catch (EOFException expected) {
     }
   }
+public void testThrowingPeekIncompleteBlockComment() throws IOException {
+    JsonReader reader = new JsonReader(reader("[/*]"));
+    reader.setLenient(true); // lenient to support block comments
+    reader.beginArray();
+    /*
+     * Make sure that incomplete block comment (i.e. missing closing * /)
+     * is not skipped after first unsuccessful peek.
+     *
+     * In previous Gson versions a subsequent peek would have skipped the
+     * comment start (i.e. "/*") and therefore could have read "valid"
+     * JSON afterwards.
+     */
+    for (int i = 0; i < 3; i++) {
+      try {
+        reader.peek();
+      } catch (MalformedJsonException expected) {
+        // Note: Exact exception message does not matter, may be changed in the future
+        assertTrue(expected.getMessage().startsWith("Unterminated comment"));
+      }
+    }
 
+    assertEquals("$[0]", reader.getPath());
+  }
   public void testSkipVeryLongUnquotedString() throws IOException {
     JsonReader reader = new JsonReader(reader("[" + repeat('x', 8192) + "]"));
     reader.setLenient(true);
@@ -1780,6 +1817,34 @@ public final class JsonReaderTest extends TestCase {
       reader.peek();
       fail();
     } catch (IOException expected) {
+    }
+  }
+
+  public void testThrowingStringEscapeSequence() throws IOException {
+    JsonReader reader = new JsonReader(reader("\"\\z\"")); // "\z" is not a valid escape sequence
+    assertEquals(JsonToken.STRING, reader.peek());
+
+    /*
+     * Make sure that neither nextString() nor skipValue() already advanced
+     * before throwing exception.
+     *
+     * In previous Gson versions they would have already consumed the '\' before
+     * the exception was thrown so a subsequent read would have read a "valid"
+     * string.
+     */
+    for (int i = 0; i < 3; i++) {
+      try {
+        reader.nextString();
+        fail();
+      } catch (MalformedJsonException expected) {
+      }
+    }
+    for (int i = 0; i < 3; i++) {
+      try {
+        reader.skipValue();
+        fail();
+      } catch (MalformedJsonException expected) {
+      }
     }
   }
 
