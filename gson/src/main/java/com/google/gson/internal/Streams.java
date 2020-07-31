@@ -113,7 +113,7 @@ public final class Streams {
         @Override
         public void write(String str, int off, int len) throws IOException {
             // Appendable.append turns null -> "null", which is not desired here
-            $Gson$Preconditions.checkNotNull(str);
+            GsonPreconditions.checkNotNull(str);
             appendable.append(str, off, off + len);
         }
 
