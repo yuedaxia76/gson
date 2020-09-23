@@ -139,7 +139,14 @@ public final class TypeAdapters {
         return null;
       } else if (peek == JsonToken.STRING) {
         // support strings for compatibility with GSON 1.7
-        return Boolean.parseBoolean(in.nextString());
+        String string = in.nextString();
+        if ("true".equalsIgnoreCase(string)) {
+          return true;
+        } else if ("false".equalsIgnoreCase(string)) {
+          return false;
+        } else {
+          throw new JsonSyntaxException("Not a valid boolean: " + string);
+        }
       }
       return in.nextBoolean();
     }
