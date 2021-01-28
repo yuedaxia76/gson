@@ -76,6 +76,6 @@ public class JavaVersionTest {
 
   @Test
   public void testUnknownVersionFormat() {
-    assertEquals(6, JavaVersion.getMajorJavaVersion("Java9")); // unknown format
+    assertEquals(8, JavaVersion.getMajorJavaVersion("Java9")); // unknown format
   }
 }
